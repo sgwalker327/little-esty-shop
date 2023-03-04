@@ -108,13 +108,7 @@ RSpec.describe "Merchant Dashboard Index" do
       end
     end
 
-    describe "things that" do
-      # 5. Merchant Dashboard Invoices sorted by least recent
-
-      # Next to each Item name I see the date that the invoice was created
-      # And I see the date formatted like "Monday, July 18, 2019"
-      # And I see that the list is ordered from oldest to newest
-
+    describe "When I visit my merchant dashboard" do
       it "In Items Ready to Ship, I see the date the invoice was created, oldest to newest" do 
 
         customer21 = create(:customer) 
@@ -136,6 +130,17 @@ RSpec.describe "Merchant Dashboard Index" do
         InvoiceItem.create!(item_id: item20.id, invoice_id: invoice20.id, status: "packaged")
       
         expect(page).to have_content("Wednesday, March 1, 2023")
+      end
+
+      it 'I see a link to view all my discounts' do
+        expect(page).to have_link("Discounts")
+      
+      end
+
+      it ' when i click this link, I am taken to my discounts index page' do
+        click_on "Discounts"
+
+        expect(current_path).to eq(discounts_path)
       end
     end
   end
