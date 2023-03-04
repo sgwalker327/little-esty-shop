@@ -112,7 +112,7 @@ RSpec.describe "Merchant Dashboard Index" do
       it "In Items Ready to Ship, I see the date the invoice was created, oldest to newest" do 
 
         customer21 = create(:customer) 
-        merchant21 = create(:merchant) 
+        @merchant21 = create(:merchant) 
         customer22 = create(:customer)
         customer24 = create(:customer)
         customer25 = create(:customer)
@@ -120,10 +120,10 @@ RSpec.describe "Merchant Dashboard Index" do
         invoice24 = create(:invoice, customer_id: customer22.id, created_at: Time.new(2023, 3, 1))
         invoice29 = create(:invoice, customer_id: customer24.id, created_at: Time.new(2023, 3, 1))
         invoice20 = create(:invoice, customer_id: customer25.id, created_at: Time.new(2023, 3, 1))
-        item21 = create(:item, merchant_id: merchant21.id)
-        item24 = create(:item, merchant_id: merchant21.id)
-        item29 = create(:item, merchant_id: merchant21.id)
-        item20 = create(:item, merchant_id: merchant21.id)
+        item21 = create(:item, merchant_id: @merchant21.id)
+        item24 = create(:item, merchant_id: @merchant21.id)
+        item29 = create(:item, merchant_id: @merchant21.id)
+        item20 = create(:item, merchant_id: @merchant21.id)
         InvoiceItem.create!(item_id: item21.id, invoice_id: invoice21.id, status: "packaged")
         InvoiceItem.create!(item_id: item24.id, invoice_id: invoice24.id, status: "packaged")
         InvoiceItem.create!(item_id: item29.id, invoice_id: invoice29.id, status: "packaged")
@@ -138,9 +138,12 @@ RSpec.describe "Merchant Dashboard Index" do
       end
 
       it ' when i click this link, I am taken to my discounts index page' do
+        @merchant21 = create(:merchant)
+        visit merchant_dashboard_path(@merchant21)
         click_on "Discounts"
 
-        expect(current_path).to eq(discounts_path)
+        expect(current_path).to eq(merchant_discounts_path(@merchant21))
+        ## Continued in discounts index page
       end
     end
   end
