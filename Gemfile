@@ -48,6 +48,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'simplecov'
   gem 'faker'
+  gem 'httparty'
  end
 
 group :development do
