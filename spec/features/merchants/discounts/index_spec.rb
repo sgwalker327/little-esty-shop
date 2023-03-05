@@ -37,6 +37,7 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
       click_on "Create Discount"
 
       expect(current_path).to eq(new_merchant_discount_path(@merchant21))
+      ## Continued in spec/features/merchants/discounts/new_spec.rb
     end
   end
 end
