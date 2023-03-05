@@ -19,5 +19,14 @@ RSpec.describe 'merchant/:id/discounts/:id/edit', type: :feature do
       expect(page).to have_field("Percent:", with: "0.2")
     end
 
+    it 'I change any/all of the information and click submit, I am redirected to the discount show page and see the new info' do
+      fill_in "Percent", with: "0.5"
+
+      click_on "Submit"
+      save_and_open_page
+      expect(current_path).to eq(merchant_discount_path(@merchant21, @discount1))
+      expect(page).to have_content("Percent Discount: 0.5%")
+      expect(page).to have_content("Quantity Threshold: 10")
+    end
   end
 end
