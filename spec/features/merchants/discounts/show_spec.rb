@@ -21,5 +21,12 @@ RSpec.describe 'merchant/:id/discounts/:id', type: :feature do
     it 'there is a button to edit the discount' do
       expect(page).to have_link("Edit Discount")
     end
+
+    it 'when I click the edit button, I am redirected to the edit page' do
+      click_link "Edit Discount"
+
+      expect(current_path).to eq(edit_merchant_discount_path(@merchant21.id, @discount1.id))
+      ## Continued on spec/features/merchant/discounts/edit_spec.rb
+    end
   end
 end

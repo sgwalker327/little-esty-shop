@@ -32,7 +32,7 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
       fill_in :threshold, with: "seagulls"
       
       click_on "Submit"
-      save_and_open_page
+   
       expect(current_path).to eq(new_merchant_discount_path(@merchant21))
       expect(page).to have_content("Field cannot")
       expect(page).to_not have_content("0.25% off 13 or more items")
