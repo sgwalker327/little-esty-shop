@@ -44,7 +44,8 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
       within "#discount-#{@discount1.id}" do
         expect(page).to have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
         expect(page).to have_link("Delete Discount")
-        click_on "Delete Discount"
+        save_and_open_page
+        click_link "Delete Discount"
       end
 
       expect(current_path).to eq(merchant_discounts_path(@merchant21))
