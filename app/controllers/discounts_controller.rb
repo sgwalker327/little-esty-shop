@@ -9,4 +9,12 @@ class DiscountsController < ApplicationController
     @discount = Discount.find(params[:id])
     # require 'pry'; binding.pry
   end
+
+  def new
+
+  end
+
+  def create 
+    
+  end
 end
