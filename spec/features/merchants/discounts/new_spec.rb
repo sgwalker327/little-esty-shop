@@ -5,7 +5,7 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
     it ' I see a form to create a new discount' do
       @merchant21 = create(:merchant)
       visit new_merchant_discount_path(@merchant21)
-      save_and_open_page
+     
       expect(page).to have_content("Create New Discount for #{@merchant21.name}'s")
       expect(page).to have_field("Percent:")
       expect(page).to have_field("Quantity Threshold:")
@@ -17,11 +17,25 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
 
       fill_in :percent, with: "0.25"
       fill_in :threshold, with: "13"
-      save_and_open_page
+      
       click_on "Submit"
 
       expect(current_path).to eq(merchant_discounts_path(@merchant21))
       expect(page).to have_content("0.25% off 13 or more items")
+    end
+
+    it 'When I fill in the form wrongly, I see an error message and stay on the form' do
+      @merchant21 = create(:merchant)
+      visit new_merchant_discount_path(@merchant21)
+
+      fill_in :percent, with: "0.25"
+      fill_in :threshold, with: "seagulls"
+      
+      click_on "Submit"
+      save_and_open_page
+      expect(current_path).to eq(new_merchant_discount_path(@merchant21))
+      expect(page).to have_content("Field cannot")
+      expect(page).to_not have_content("0.25% off 13 or more items")
     end
   end
 end
