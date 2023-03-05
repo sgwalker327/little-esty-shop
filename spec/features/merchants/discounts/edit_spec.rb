@@ -11,9 +11,13 @@ RSpec.describe 'merchant/:id/discounts/:id/edit', type: :feature do
 
   describe 'when I visit the edit merchant discount page' do
     it 'It displays an edit discount form with prepopulated discount info' do
+      
       expect(page).to have_content("Edit Discount ##{@discount1.id}")
       expect(page).to have_field("Percent:")
       expect(page).to have_field("Quantity Threshold:")
+      expect(page).to have_field("Quantity Threshold:", with: "10")
+      expect(page).to have_field("Percent:", with: "0.2")
     end
+
   end
 end
