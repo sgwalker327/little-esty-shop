@@ -1,7 +1,8 @@
 <h2>Available Bulk Discounts for <%= @merchant.name %></h2>
+<p><%= link_to "Create Discount", new_merchant_discount_path(@merchant.id) %></p>
+
 <ul>
 <% @discounts.each do |discount| %>
-
   <div id="discount-<%= discount.id %>">
     <li><%= discount.percent %>% off <%= discount.threshold %> or more items</li>
     <li><%= link_to "View Discount", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %></li>
