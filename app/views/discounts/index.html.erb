@@ -6,6 +6,7 @@
   <div id="discount-<%= discount.id %>">
     <li><%= discount.percent %>% off <%= discount.threshold %> or more items</li>
     <li><%= link_to "View Discount", "/merchants/#{@merchant.id}/discounts/#{discount.id}" %></li>
+    <li><%= link_to "Delete Discount", "/merchants/#{@merchant.id}/discounts/#{discount.id}", method: :delete %></li>
   </div>
 <% end %>
 </ul>
