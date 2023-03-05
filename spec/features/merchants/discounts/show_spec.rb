@@ -17,5 +17,9 @@ RSpec.describe 'merchant/:id/discounts/:id', type: :feature do
       expect(page).to_not have_content("Quantity Threshold: #{@discount2.threshold} items")
       expect(page).to_not have_content("Percent Discount: #{@discount2.percent}%")
     end
+
+    it 'there is a button to edit the discount' do
+      expect(page).to have_link("Edit Discount")
+    end
   end
 end
