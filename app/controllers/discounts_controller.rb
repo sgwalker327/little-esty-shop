@@ -37,7 +37,9 @@ class DiscountsController < ApplicationController
   end
 
   def update
-    require 'pry'; binding.pry
+    discount = Discount.find(params[:id])
+    discount.update(discount_params)
+    redirect_to merchant_discount_path(params[:merchant_id], discount.id)
   end
 
   private
