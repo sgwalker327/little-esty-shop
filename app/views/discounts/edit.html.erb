@@ -1,0 +1,12 @@
+<h2>Edit Discount #<%= @discount.id %>
+
+<%= form_with url: merchant_discount_path(@merchant.id, @discount.id), method: :put, local: true do |f| %>
+  <%= f.hidden_field :merchant_id, value: "#{@merchant.id}" %>
+  <%= f.label :percent, "Percent:" %>
+  <%= f.text_field :percent, value: @discount.percent %>
+  <br>
+  <%= f.label :threshold, "Quantity Threshold:" %>
+  <%= f.text_field :threshold, value: @discount.threshold %>
+  <br>
+  <%= f.submit "Submit" %>
+<% end %>
