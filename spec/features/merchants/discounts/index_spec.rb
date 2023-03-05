@@ -12,6 +12,9 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
 
   describe 'when I visit the merchant discount index page' do
     it 'displays the available bulk discounts and attributes' do
+
+      visit merchant_discounts_path(@merchant21)
+      
       expect(page).to have_content("Available Bulk Discounts for #{@merchant21.name}")
       expect(page).to have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
       expect(page).to have_content("#{@discount2.percent}% off #{@discount2.threshold} or more items")
@@ -19,6 +22,7 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
     end
     
     it 'has a link to each discount\'s show page' do
+    
       within "#discount-#{@discount1.id}" do
         expect(page).to have_link("View Discount")
         click_on "View Discount"
@@ -34,6 +38,7 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
     end
 
     it 'when I click the link I am redirected a new discount page' do
+
       click_on "Create Discount"
 
       expect(current_path).to eq(new_merchant_discount_path(@merchant21))
@@ -41,10 +46,11 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
     end
 
     it 'has a button next to each discount to delete it' do
+
       within "#discount-#{@discount1.id}" do
         expect(page).to have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
         expect(page).to have_link("Delete Discount")
-        save_and_open_page
+        
         click_link "Delete Discount"
       end
 
