@@ -9,4 +9,24 @@ class DiscountsController < ApplicationController
     @discount = Discount.find(params[:id])
     # require 'pry'; binding.pry
   end
+
+  def new
+    @merchant = Merchant.find(params[:merchant_id])
+  end
+
+  def create 
+    discount = Discount.new(discount_params)
+    if discount.valid?
+      discount.save
+      redirect_to merchant_discounts_path
+    else
+      flash[:notice] = 'Field cannot be blank.'
+      redirect_to new_merchant_discount_path(params[:merchant_id])
+    end
+  end
+
+  private
+  def discount_params
+    params.permit(:merchant_id, :percent, :threshold)
+  end
 end
