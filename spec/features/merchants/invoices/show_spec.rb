@@ -17,6 +17,8 @@ RSpec.describe "Merchant Invoice Show Page" do
     @invoice_item_1 = create(:invoice_item, item_id: @item_1.id, quantity: 10, unit_price: 10, invoice_id: @invoice_1.id, status: 0)
     @invoice_item_2 = create(:invoice_item, item_id: @item_2.id, quantity: 10, unit_price: 8, invoice_id: @invoice_1.id, status: 0 )
     @invoice_item_3 = create(:invoice_item, item_id: @item_4.id, quantity: 8, unit_price: 6, invoice_id: @invoice_3.id )
+    @merchant_1.discounts.create!(percent: 0.20, threshold: 10)
+    @merchant_1.discounts.create!(percent: 0.10, threshold: 5)
     
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
   end
@@ -26,7 +28,7 @@ RSpec.describe "Merchant Invoice Show Page" do
     it "Then I see information related to that invoice" do
       expect(page).to have_content("ID: #{@invoice_1.id}")
       expect(page).to have_content("Status: #{@invoice_1.status}")
-      expect(page).to have_content("Created At: Monday, January 28, 2019")
+      expect(page).to have_content("Created On: Monday, January 28, 2019")
       expect(page).to have_content("Customer: #{@customer_1.first_name} #{@customer_1.last_name}")
 
       expect(page).to_not have_content("ID: #{@invoice_2.id}")
@@ -57,26 +59,34 @@ RSpec.describe "Merchant Invoice Show Page" do
       expect(page).to have_content("Total Revenue: $1.80")
 
     end
-
+  end
   # 18. Merchant Invoice Show Page: Update Item Status
   it 'field displays current invoice item status and button allows the status to change' do
   
-      visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
-      
-      within "#invoice-item-#{@item_1.id}" do
-        select("pending", :from => 'status').click
-        click_button('Update Item Status')
-  
-      
-        expect(current_path).to eq("/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}")
-        expect(page).to have_content("pending")
+    visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
+    
+    within "#invoice-item-#{@item_1.id}" do
+      select("pending", :from => 'status').click
+      click_button('Update Item Status')
 
-        select("shipped", :from => 'status').click
-        click_button('Update Item Status')
-        
-        expect(current_path).to eq("/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}")
-        expect(page).to have_content("shipped")
-      end
+    
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}")
+      expect(page).to have_content("pending")
+
+      select("shipped", :from => 'status').click
+      click_button('Update Item Status')
+      
+      expect(current_path).to eq("/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}")
+      expect(page).to have_content("shipped")
     end
+  end
+
+  it 'displays the total discount that will be applied to the invoice' do
+    expect(page).to have_content("Total Discount: $0.36")
+  end
+
+  it 'displays the total revenue after discount' do
+    expect(page).to have_content("Total Discounted Revenue: $1.44")
+    require 'pry'; binding.pry
   end
 end

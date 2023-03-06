@@ -3,6 +3,7 @@ class Invoice < ApplicationRecord
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
+  has_many :merchants, through: :items
   
   enum status: [ :in_progress, :completed, :cancelled ]
 
@@ -27,5 +28,17 @@ class Invoice < ApplicationRecord
   def items_with_attributes
     items
     .select("invoice_items.status as stat, items.*, invoice_items.unit_price as sale_price, invoice_items.quantity as quant")
+  end
+
+  def total_inv_disc
+    x = invoice_items.joins(item: {merchant: :discounts})
+    .where("invoice_items.quantity >= discounts.threshold")
+    .group("invoice_items.id")
+    .select("MAX(invoice_items.quantity * invoice_items.unit_price * discounts.percent) AS discount_amt")
+    x.sum(&:discount_amt)
+  end
+
+  def total_disc_rev
+    calc_total_revenue - total_inv_disc
   end
 end
