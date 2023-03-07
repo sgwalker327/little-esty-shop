@@ -65,7 +65,7 @@ RSpec.describe "Merchant Invoice Show Page" do
   
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
     
-    within "#invoice-item-#{@item_1.id}" do
+    within "#invoice-item-#{@invoice_item_1.id}" do
       select("pending", :from => 'status').click
       click_button('Update Item Status')
 
@@ -87,6 +87,15 @@ RSpec.describe "Merchant Invoice Show Page" do
 
   it 'displays the total revenue after discount' do
     expect(page).to have_content("Total Discounted Revenue: $1.44")
-    require 'pry'; binding.pry
+    
+  end
+
+  it 'displays a button linking to the top discount for each item' do
+    
+    within "#invoice-item-#{@invoice_item_1.id}" do
+      expect(page).to have_link("Discount Applied")
+      click_link("Discount Applied")
+    end
+    expect(current_path).to eq(merchant_discount_path(@merchant_1, @invoice_item_1.top_discount))
   end
 end
