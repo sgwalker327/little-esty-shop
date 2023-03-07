@@ -2,7 +2,7 @@
 
 <p>ID: <%= @invoice.id %></p>
 <p>Status: <%= @invoice.status %></p>
-<p>Created At: <%= @invoice.created_at.strftime("%A, %B %e, %Y") %></p>
+<p>Created On: <%= @invoice.created_at.strftime("%A, %B %e, %Y") %></p>
 
 <p>Customer: <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %>
 
@@ -19,5 +19,9 @@
 <% end %>
 
 <p> Total Revenue: <%= format_price(@total_revenue) %></p>
+<br>
+<p> Total Discount: <%= format_price(@discount) %> </p>
+<br>
+<p> Total Discounted Revenue: <%= format_price(@disc_total) %> </p>
 
 

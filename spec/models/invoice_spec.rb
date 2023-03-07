@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 
 RSpec.describe Invoice, type: :model do
@@ -8,6 +6,7 @@ RSpec.describe Invoice, type: :model do
     it { should have_many :transactions }
     it { should have_many :invoice_items }
     it { should have_many(:items).through(:invoice_items) }
+    it { should have_many(:merchants).through(:items)}
   end
 
   describe '.incomplete' do
@@ -20,7 +19,7 @@ RSpec.describe Invoice, type: :model do
       @invoice5 = create(:invoice, customer_id: @customer.id, created_at: Time.new(2002))
       @merchant = create(:merchant)
       @item = create(:item, merchant_id: @merchant.id)
-      # StatusKey: 0 => packaged, 1 => pending, 2 => shipped
+      
       @invoice_item1 = create(:invoice_item, invoice_id: @invoice1.id, item_id: @item.id, status: 2)
       @invoice_item2 = create(:invoice_item, invoice_id: @invoice2.id, item_id: @item.id, status: 0)
       @invoice_item3 = create(:invoice_item, invoice_id: @invoice3.id, item_id: @item.id, status: 2)
@@ -42,7 +41,9 @@ RSpec.describe Invoice, type: :model do
       expect(@invoice1.items_with_invoice_attributes.first.unit_price).to eq(@invoice_item1.unit_price)
       expect(@invoice1.items_with_invoice_attributes.first.status).to eq(@invoice_item1.status)
     end
+  end
 
+  describe '#calc_total_revenue' do
     it 'lists total revenue for an invoice' do
       merchant10 = create(:merchant)
       item10 = create(:item, merchant_id: merchant10.id)
@@ -56,6 +57,44 @@ RSpec.describe Invoice, type: :model do
       invoice_item3 = create(:invoice_item, invoice_id: invoice10.id, item_id: item10.id, quantity: 10, unit_price: 3)
 
       expect(invoice10.calc_total_revenue).to eq(100)
+    end
+  end
+
+  describe '#total_dicount' do
+    it 'returns the total discount on an invoice' do
+      merchant10 = create(:merchant)
+      item10 = create(:item, merchant_id: merchant10.id)
+      item11 = create(:item, merchant_id: merchant10.id)
+      item12 = create(:item, merchant_id: merchant10.id)
+      customer10 = create(:customer)
+      invoice10 = create(:invoice, customer_id: customer10.id)
+      invoice_item1 = create(:invoice_item, invoice_id: invoice10.id, item_id: item10.id, quantity: 10, unit_price: 35)
+      invoice_item2 = create(:invoice_item, invoice_id: invoice10.id, item_id: item11.id, quantity: 7, unit_price: 20)
+      invoice_item2 = create(:invoice_item, invoice_id: invoice10.id, item_id: item12.id, quantity: 4, unit_price: 30)
+      merchant10.discounts.create!(percent: 0.20, threshold: 10)
+      merchant10.discounts.create!(percent: 0.10, threshold: 5)
+      
+      expect(invoice10.total_inv_disc).to eq(84.00)
+    end
+  end
+
+  describe '#total_disc_rev' do
+    it 'returns the total discounted revenue on an invoice' do
+      merchant10 = create(:merchant)
+      item10 = create(:item, merchant_id: merchant10.id)
+      item11 = create(:item, merchant_id: merchant10.id)
+      item12 = create(:item, merchant_id: merchant10.id)
+      customer10 = create(:customer)
+      invoice10 = create(:invoice, customer_id: customer10.id)
+      invoice_item1 = create(:invoice_item, invoice_id: invoice10.id, item_id: item10.id, quantity: 10, unit_price: 35)
+      invoice_item2 = create(:invoice_item, invoice_id: invoice10.id, item_id: item11.id, quantity: 7, unit_price: 20)
+      invoice_item2 = create(:invoice_item, invoice_id: invoice10.id, item_id: item12.id, quantity: 4, unit_price: 30)
+      merchant10.discounts.create!(percent: 0.20, threshold: 10)
+      merchant10.discounts.create!(percent: 0.10, threshold: 5)
+
+      expect(invoice10.calc_total_revenue).to eq(610.00)
+      expect(invoice10.total_inv_disc).to eq(84.00)
+      expect(invoice10.total_disc_rev).to eq(526.00)
     end
   end
 end
