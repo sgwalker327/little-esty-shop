@@ -54,5 +54,34 @@ describe 'Admin Invoices show page' do
         expect(page).to have_content("cancelled")
       end
     end
+    describe 'discounted revenue' do
+      before do
+        @merchant_1 = create(:merchant)
+        @merchant_2 = create(:merchant)
+        @customer_1 = create(:customer)
+        @customer_2 = create(:customer)
+        @item_1 = create(:item, merchant_id: @merchant_1.id)
+        @item_2 = create(:item, merchant_id: @merchant_1.id)
+        @item_3 = create(:item, merchant_id: @merchant_1.id)
+        @item_4 = create(:item, merchant_id: @merchant_2.id)
+        @invoice_1 = create(:invoice, customer_id: @customer_1.id, status: 'completed', created_at: "January 28, 2019")
+        @invoice_2 = create(:invoice, customer_id: @customer_2.id, status: 'cancelled', created_at: "June 8, 2013")
+        @invoice_3 = create(:invoice, customer_id: @customer_2.id, status: 'cancelled', created_at: "May 8, 2013")
+        @invoice_item_1 = create(:invoice_item, item_id: @item_1.id, quantity: 10, unit_price: 10, invoice_id: @invoice_1.id, status: 0)
+        @invoice_item_2 = create(:invoice_item, item_id: @item_2.id, quantity: 10, unit_price: 8, invoice_id: @invoice_1.id, status: 0 )
+        @invoice_item_3 = create(:invoice_item, item_id: @item_4.id, quantity: 8, unit_price: 6, invoice_id: @invoice_3.id, status: 0 )
+        @invoice_item_4 = create(:invoice_item, item_id: @item_3.id, quantity: 2, unit_price: 7, invoice_id: @invoice_1.id, status: 0 )
+        @merchant_1.discounts.create!(percent: 0.20, threshold: 10)
+        @merchant_1.discounts.create!(percent: 0.10, threshold: 5)
+        
+        
+        visit admin_invoice_path(@invoice_1)
+      end
+      it 'I see the total discounted revenue from this invoice which includes bulk discounts in the calculation' do
+        expect(page).to have_content("Total Revenue: $1.94")
+        expect(page).to have_content("Total Discounted Revenue: $1.58")
+      end
+    end
+
   end
 end

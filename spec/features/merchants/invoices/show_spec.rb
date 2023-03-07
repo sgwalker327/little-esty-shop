@@ -16,9 +16,11 @@ RSpec.describe "Merchant Invoice Show Page" do
     @invoice_3 = create(:invoice, customer_id: @customer_2.id, status: 'cancelled', created_at: "May 8, 2013")
     @invoice_item_1 = create(:invoice_item, item_id: @item_1.id, quantity: 10, unit_price: 10, invoice_id: @invoice_1.id, status: 0)
     @invoice_item_2 = create(:invoice_item, item_id: @item_2.id, quantity: 10, unit_price: 8, invoice_id: @invoice_1.id, status: 0 )
-    @invoice_item_3 = create(:invoice_item, item_id: @item_4.id, quantity: 8, unit_price: 6, invoice_id: @invoice_3.id )
+    @invoice_item_3 = create(:invoice_item, item_id: @item_4.id, quantity: 8, unit_price: 6, invoice_id: @invoice_3.id, status: 0 )
+    @invoice_item_4 = create(:invoice_item, item_id: @item_3.id, quantity: 2, unit_price: 7, invoice_id: @invoice_1.id, status: 0 )
     @merchant_1.discounts.create!(percent: 0.20, threshold: 10)
     @merchant_1.discounts.create!(percent: 0.10, threshold: 5)
+    
     
     visit "/merchants/#{@merchant_1.id}/invoices/#{@invoice_1.id}"
   end
@@ -56,7 +58,7 @@ RSpec.describe "Merchant Invoice Show Page" do
    # 17. Merchant Invoice Show Page: Total Revenue
   describe "When I visit my merchant invoice show page" do
     it "Then I see the total revenue that will be generated from all of my items on the invoice" do
-      expect(page).to have_content("Total Revenue: $1.80")
+      expect(page).to have_content("Total Revenue: $1.94")
 
     end
   end
@@ -86,12 +88,16 @@ RSpec.describe "Merchant Invoice Show Page" do
   end
 
   it 'displays the total revenue after discount' do
-    expect(page).to have_content("Total Discounted Revenue: $1.44")
+    expect(page).to have_content("Total Discounted Revenue: $1.58")
     
   end
 
   it 'displays a button linking to the top discount for each item' do
-    
+
+    within "#invoice-item-#{@invoice_item_4.id}" do
+      expect(page).to_not have_link("Discount Applied")
+    end
+
     within "#invoice-item-#{@invoice_item_1.id}" do
       expect(page).to have_link("Discount Applied")
       click_link("Discount Applied")

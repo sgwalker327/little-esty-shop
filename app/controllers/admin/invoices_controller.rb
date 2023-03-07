@@ -4,6 +4,7 @@ class Admin::InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
     @invoice_items_and_attributes = @invoice.items_with_invoice_attributes
     @total_revenue = @invoice.calc_total_revenue
+    @disc_total = @invoice.total_disc_rev
     @statuses = ["cancelled", "in_progress", "completed"]
   end
 
