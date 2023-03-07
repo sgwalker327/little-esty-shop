@@ -14,10 +14,6 @@ class Item < ApplicationRecord
     invoice_items.first.invoice_id
   end
 
-  # def item_invoice_status
-  #   invoice_items.first.status
-  # end
-
   def invoice_where(invoice_id)
     invoice_items.where("invoice_id = #{invoice_id}").first
   end
