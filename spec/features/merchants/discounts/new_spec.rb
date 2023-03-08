@@ -47,7 +47,7 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
       fill_in :threshold, with: "10"
 
       click_on "Submit"
-      save_and_open_page
+      
 
       expect(current_path).to eq(new_merchant_discount_path(@merchant21))
       expect(page).to have_content("Invalid Input")
