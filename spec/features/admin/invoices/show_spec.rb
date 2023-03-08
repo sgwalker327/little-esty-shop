@@ -82,6 +82,5 @@ describe 'Admin Invoices show page' do
         expect(page).to have_content("Total Discounted Revenue: $1.58")
       end
     end
-
   end
 end
