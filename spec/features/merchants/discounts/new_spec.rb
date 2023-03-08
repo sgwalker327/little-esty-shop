@@ -21,9 +21,10 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
       click_on "Submit"
 
       expect(current_path).to eq(merchant_discounts_path(@merchant21))
-      expect(page).to have_content("0.25% off 13 or more items")
+      expect(page).to have_content("25.0% off 13 or more items")
     end
 
+    
     it 'When I fill in the form wrongly, I see an error message and stay on the form' do
       @merchant21 = create(:merchant)
       visit new_merchant_discount_path(@merchant21)

@@ -16,7 +16,7 @@ RSpec.describe 'merchant/:id/discounts/:id/edit', type: :feature do
       expect(page).to have_field("Percent:")
       expect(page).to have_field("Quantity Threshold:")
       expect(page).to have_field("Quantity Threshold:", with: "10")
-      expect(page).to have_field("Percent:", with: "0.2")
+      expect(page).to have_field("Percent:", with: "20.0")
     end
 
     it 'I change any/all of the information and click submit, I am redirected to the discount show page and see the new info' do
@@ -27,6 +27,16 @@ RSpec.describe 'merchant/:id/discounts/:id/edit', type: :feature do
       expect(current_path).to eq(merchant_discount_path(@merchant21, @discount1))
       expect(page).to have_content("Percent Discount: 0.5%")
       expect(page).to have_content("Quantity Threshold: 10")
+    end
+
+    it 'If I fill out the form incorrectly, I see an error message and stay on the form' do
+      fill_in :percent, with: "0.5"
+      fill_in :threshold, with: "seagulls"
+
+      click_on "Submit"
+     
+      expect(current_path).to eq(edit_merchant_discount_path(@merchant21, @discount1))
+      expect(page).to have_content("Invalid input")
     end
   end
 end
