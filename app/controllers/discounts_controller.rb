@@ -16,7 +16,7 @@ class DiscountsController < ApplicationController
     @merchant = Merchant.find(params[:merchant_id])
   end
 
-  def create 
+  def create
     discount = Discount.new(discount_params)
     if discount.valid?
       discount.save
@@ -39,8 +39,12 @@ class DiscountsController < ApplicationController
 
   def update
     discount = Discount.find(params[:id])
-    discount.update(discount_params)
-    redirect_to merchant_discount_path(params[:merchant_id], discount.id)
+      if discount.update(discount_params)
+        redirect_to merchant_discount_path(params[:merchant_id], discount.id)
+      else
+        flash[:notice] ='Invalid input'
+        redirect_to edit_merchant_discount_path(params[:merchant_id], discount.id)
+      end
   end
 
   private

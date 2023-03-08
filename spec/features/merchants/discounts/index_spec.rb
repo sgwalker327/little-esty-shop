@@ -16,9 +16,9 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
       visit merchant_discounts_path(@merchant21)
       
       expect(page).to have_content("Available Bulk Discounts for #{@merchant21.name}")
-      expect(page).to have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
-      expect(page).to have_content("#{@discount2.percent}% off #{@discount2.threshold} or more items")
-      expect(page).to_not have_content("#{@discount3.percent}% off #{@discount3.threshold} or more items")
+      expect(page).to have_content("20.0% off #{@discount1.threshold} or more items")
+      expect(page).to have_content("33.0% off #{@discount2.threshold} or more items")
+      expect(page).to_not have_content("40.0% off #{@discount3.threshold} or more items")
     end
     
     it 'has a link to each discount\'s show page' do
@@ -46,18 +46,17 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
     end
 
     it 'has a button next to each discount to delete it' do
-
       within "#discount-#{@discount1.id}" do
-        expect(page).to have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
+        expect(page).to have_content("20.0% off #{@discount1.threshold} or more items")
         expect(page).to have_link("Delete Discount")
         
         click_link "Delete Discount"
       end
 
       expect(current_path).to eq(merchant_discounts_path(@merchant21))
-      expect(page).to_not have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
+      expect(page).to_not have_content("20.0% off #{@discount1.threshold} or more items")
     end
-
+    
     it 'it displays the next 3 upcoming US holidays and header' do
       expect(page).to have_content("Upcoming US Holidays")
       expect(page).to have_content("Good Friday, 2023-04-07")
