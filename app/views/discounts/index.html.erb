@@ -10,3 +10,9 @@
   </div>
 <% end %>
 </ul>
+
+<h2>Upcoming US Holidays</h2>
+<% @holidays.each do |h| %>
+  <p><%= h.name %>, <%= h.date %></p>
+<% end %>
+  

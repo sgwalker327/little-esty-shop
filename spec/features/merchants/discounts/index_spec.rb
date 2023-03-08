@@ -57,5 +57,12 @@ RSpec.describe 'merchant/:id/discounts', type: :feature do
       expect(current_path).to eq(merchant_discounts_path(@merchant21))
       expect(page).to_not have_content("#{@discount1.percent}% off #{@discount1.threshold} or more items")
     end
+
+    it 'it displays the next 3 upcoming US holidays and header' do
+      expect(page).to have_content("Upcoming US Holidays")
+      expect(page).to have_content("Good Friday, 2023-04-07")
+      expect(page).to have_content("Memorial Day, 2023-05-29")
+      expect(page).to have_content("Juneteenth, 2023-06-19")
+    end
   end
 end
