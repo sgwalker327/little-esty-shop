@@ -13,9 +13,9 @@ RSpec.describe 'merchant/:id/discounts/:id', type: :feature do
     it 'displays the discount\'s attributes' do
       expect(page).to have_content("Discount #{@discount1.id}'s Page")
       expect(page).to have_content("Quantity Threshold: #{@discount1.threshold} items")
-      expect(page).to have_content("Percent Discount: #{@discount1.percent}%")
+      expect(page).to have_content("Percent Discount: 20.0%")
       expect(page).to_not have_content("Quantity Threshold: #{@discount2.threshold} items")
-      expect(page).to_not have_content("Percent Discount: #{@discount2.percent}%")
+      expect(page).to_not have_content("Percent Discount: 33.0%")
     end
 
     it 'there is a button to edit the discount' do

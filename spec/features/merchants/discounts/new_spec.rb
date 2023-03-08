@@ -35,8 +35,22 @@ RSpec.describe 'merchant/:id/discounts/new', type: :feature do
       click_on "Submit"
    
       expect(current_path).to eq(new_merchant_discount_path(@merchant21))
-      expect(page).to have_content("Field cannot")
+      expect(page).to have_content("Invalid Input")
       expect(page).to_not have_content("0.25% off 13 or more items")
+    end
+
+    it 'If I put a percent over 100%, I see an error message' do
+      @merchant21 = create(:merchant)
+      visit new_merchant_discount_path(@merchant21)
+
+      fill_in :percent, with: "1.5"
+      fill_in :threshold, with: "10"
+
+      click_on "Submit"
+      save_and_open_page
+
+      expect(current_path).to eq(new_merchant_discount_path(@merchant21))
+      expect(page).to have_content("Invalid Input")
     end
   end
 end
