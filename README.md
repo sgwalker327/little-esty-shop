@@ -24,3 +24,13 @@ Work completed includes user stories 1 through 36 as well as 3 Github stories fo
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Of special consideration is a refactor of the GitHub REST API user stories to better integreate functionality in terms of Rails and object oriented design. Several spec files could also be refactorted to include more robust tests and test data with more edge cases.
+
+----------------------------------------------------------------
+# Little Esty Shop Bulk Discounts
+"Little Esty Shop Bulk Discounts" is an extension of "Little Esty Shop". This extension adds discount functionality to the "Little Esty Shop" and allows merchants to create, edit, and delete  discounts as well as apply them to their invoices.
+
+# Built with:
+This extension was developed using Ruby on Rails and a PostgreSQL database. Heroku is used for the deployment and the API integration of the US Holidays was done using the Nager API.
+
+Author:
+[Sam Walker](https://github.com/sgwalker327/)

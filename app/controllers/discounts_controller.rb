@@ -22,7 +22,7 @@ class DiscountsController < ApplicationController
       discount.save
       redirect_to merchant_discounts_path
     else
-      flash[:notice] = 'Field cannot be blank.'
+      flash[:notice] = 'Invalid Input'
       redirect_to new_merchant_discount_path(params[:merchant_id])
     end
   end
