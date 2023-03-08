@@ -3,10 +3,10 @@
 <%= form_with url: merchant_discount_path(@merchant.id, @discount.id), method: :put, local: true do |f| %>
   <%= f.hidden_field :merchant_id, value: "#{@merchant.id}" %>
   <%= f.label :percent, "Percent:" %>
-  <%= f.text_field :percent, value: (@discount.percent) %>
+  <%= f.text_field :percent, value: (@discount.percent) %> (Enter a decimal number greater than 0 and less than or equal to 1)
   <br>
   <%= f.label :threshold, "Quantity Threshold:" %>
-  <%= f.text_field :threshold, value: (@discount.threshold) %>
+  <%= f.text_field :threshold, value: (@discount.threshold) %> (Enter a whole number greater than or equal to 1)
   <br>
   <%= f.submit "Submit" %>
 <% end %>

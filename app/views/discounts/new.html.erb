@@ -3,10 +3,11 @@
 <%= form_with model: @discounts, url: merchant_discounts_path, method: :post, local: true do |f| %>
   <%= f.hidden_field :merchant_id, value: "#{@merchant.id}" %>
   <%= f.label :percent, "Percent:" %>
-  <%= f.text_field :percent%>
+  <%= f.text_field :percent%> (Enter a decimal number greater than 0 and less than or equal to 1)
+
   <br>
   <%= f.label :threshold, "Quantity Threshold:" %>
-  <%= f.text_field :threshold %>
+  <%= f.text_field :threshold %> (Enter a whole number greater than or equal to 1)
   <br>
   <%= f.submit "Submit" %>
 <% end %>
