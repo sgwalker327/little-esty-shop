@@ -44,7 +44,19 @@ RSpec.describe 'merchant/:id/discounts/:id/edit', type: :feature do
       fill_in :threshold, with: "10"
 
       click_on "Submit"
-      
+
+      expect(current_path).to eq(edit_merchant_discount_path(@merchant21, @discount1))
+      expect(page).to have_content("Invalid input")
+    end
+
+    it 'If I put a threshold under 1, I see an error message' do
+      # visit end_merchant_discount_path(@merchant21, @discount1)
+
+      fill_in :percent, with: "1.5"
+      fill_in :threshold, with: "-1"
+
+      click_on "Submit"
+
       expect(current_path).to eq(edit_merchant_discount_path(@merchant21, @discount1))
       expect(page).to have_content("Invalid input")
     end
